@@ -1,218 +1,217 @@
-# 📘 Expectation Decider – Probability Project  
-Simple Student-Friendly Analysis Using Python
+# 📕 Calculative Foundation — Linear Algebra Project
 
-This project analyzes student performance using probability concepts.  
-A CSV dataset is used along with Python libraries to calculate empirical probability, random variables, mean, variance, Venn diagram, contingency table, conditional probability, and Bayes theorem.
+> A hands-on linear algebra project applied to student score data, covering vector operations, matrix decompositions, and dimensionality reduction.
 
 ---
 
-## 📂 Project Files
+## 📌 Dataset
 
-- students_expectation_modified.csv  
-- Expectation_Decider.ipynb  
-- README.md  
+Student scores across 4 subjects used throughout the project:
 
----
+| Student | Math | Physics | Chemistry | English |
+|---------|------|---------|-----------|---------|
+| S1      | 78   | 85      | 82        | 74      |
+| S2      | 88   | 79      | 91        | 84      |
+| S3      | 65   | 72      | 70        | 68      |
+| S4      | 90   | 95      | 93        | 89      |
 
-## 🧰 Libraries Used
-
-- pandas  
-- numpy  
-- matplotlib  
-- matplotlib-venn  
-
-Install required libraries using:
-
-pip install pandas numpy matplotlib matplotlib-venn
+Each student's scores are represented as a **4-dimensional vector** and all four students form a **4×4 score matrix** `X`.
 
 ---
 
-## 📊 Dataset Description
+## 📂 Project Structure
 
-The dataset contains student-level information with the following columns:
-
-- study_hours – Number of study hours  
-- attendance – Attendance percentage  
-- group_discussion – Yes / No  
-- previous_test_score – Previous exam marks  
-- final_exam_pass – Pass / Fail  
-
-Total records: 200 students.
-
----
-
-## 🎯 Objective of the Project
-
-To understand how:
-
-- Study Hours  
-- Attendance  
-- Group Discussion  
-- Previous Test Scores  
-
-affect student exam performance using probability methods.
+```
+Calculative_Foundation.ipynb   # Main Jupyter Notebook
+README.md                      # This file
+plot1_subject_scores.png       # Bar chart: per-subject scores
+plot2_vectors.png              # 2D vector visualization
+plot3_eigenvalues.png          # Eigenvalue importance chart
+plot4_pca.png                  # PCA 2D projection
+plot5_lda.png                  # LDA classification graph
+```
 
 ---
 
-## 1. Probability
+## 🔢 Part A — Vector & Matrix Fundamentals
 
-Probability means the chance of something happening.
+### 1️⃣ Representing Scores as Vectors
+Each student's scores are stored as a NumPy array:
+```python
+s1 = np.array([78, 85, 82, 74])
+s2 = np.array([88, 79, 91, 84])
+```
 
-Formula:
+### 2️⃣ Norms
+The **L1 (Manhattan) norm** sums the absolute values of all components:
+```python
+np.linalg.norm(s1, 1)   # → 319.0
+```
 
-Probability = Favourable Outcomes / Total Outcomes
+### 3️⃣ Dot Product
+Measures the similarity between two student vectors:
+```python
+np.dot(s1, s2)   # → 27257
+```
 
-Example events:
+### 4️⃣ Angle Between Vectors
+```python
+cos_theta = np.dot(s1, s2) / (np.linalg.norm(s1) * np.linalg.norm(s2))
+angle = np.arccos(cos_theta)
+```
 
-- Student passes exam  
-- Student studies more than 10 hours  
-- Student joins group discussion  
+### 5️⃣ Cross Product (3D)
+Selecting 3 subjects and computing the perpendicular vector:
+```python
+np.cross([78, 85, 82], [88, 79, 91])   # → [1257, 118, -1318]
+```
 
----
-
-## 2. Empirical Probability
-
-Probability of passing exam is calculated using:
-
-Probability of Pass = Passed Students / Total Students
-
-This gives real probability based on dataset values.
-
----
-
-## 3. Random Variable
-
-Let X = number of students passing out of 3.
-
-Possible values of X:
-
-0, 1, 2, 3
-
-Let:
-
-p = probability of one student passing  
-f = probability of one student failing  
-
-Probability distribution:
-
-- 0 students pass = f³  
-- 1 student passes = 3pf²  
-- 2 students pass = 3p²f  
-- 3 students pass = p³  
+### 6️⃣ Vector Projection
+Projects vector **A** onto vector **B** to find its component along B.
 
 ---
 
-## 4. Mean and Variance
+## 🔢 Part B — Matrix Operations
 
-Mean (Expected Value):
+The full student matrix:
+```python
+X = np.array([
+    [78, 85, 82, 74],
+    [88, 79, 91, 84],
+    [65, 72, 70, 68],
+    [90, 95, 93, 89]
+])
+```
 
-Shows average number of students passing out of 3.
-
-Variance:
-
-Shows how much the results vary from the mean.
-
-Formulas used:
-
-Mean = Σ(x × P(x))  
-Variance = Σ((x − mean)² × P(x))
-
----
-
-## 5. Venn Diagram
-
-Two conditions are analyzed:
-
-- Study hours greater than 10  
-- Attendance greater than 80%  
-
-The Venn diagram represents:
-
-- Left circle → Students studying more than 10 hours  
-- Right circle → Students with attendance above 80%  
-- Overlapping area → Students satisfying both conditions  
+| Operation        | Code                      |
+|------------------|---------------------------|
+| Addition         | `X + X`                   |
+| Multiplication   | `X @ X` / `np.matmul(X, X.T)` |
+| Transpose        | `X.T`                     |
+| Determinant      | `np.linalg.det(X)`        |
+| Inverse          | `np.linalg.inv(X)`        |
 
 ---
 
-## 6. Contingency Table
+## 🔢 Part C — Linear Transformations & Geometry
 
-A contingency table is created using:
+| Dimension | Example                    |
+|-----------|----------------------------|
+| 1D        | Single score               |
+| 2D        | Math vs Physics            |
+| 3D        | Math + Physics + Chemistry |
+| ND        | All subjects               |
 
-- Group Discussion  
-- Final Exam Result  
-
-This table is used to calculate:
-
-- Joint Probability  
-- Marginal Probability  
-- Conditional Probability  
+Concepts covered: **lines**, **planes**, and **hyperplanes** in vector space — the foundation for classifiers like Support Vector Machines (SVM).
 
 ---
 
-## 7. Joint, Marginal and Conditional Probability
+## 🔢 Part D — Eigenvalues & Decomposition
 
-Joint Probability:
-Probability of Group Discussion AND Pass.
+### 7️⃣ Eigenvalues & Eigenvectors
+Used to understand the **variance structure** of the data:
+```python
+cov = np.cov(X.T)
+eig_values, eig_vectors = np.linalg.eig(cov)
+```
 
-Marginal Probability:
-Overall probability of Pass.
+### 8️⃣ LU Decomposition
+Factorizes matrix `X` into lower and upper triangular matrices:
+```python
+from scipy.linalg import lu
+P, L, U = lu(X)
+```
 
-Conditional Probability:
-Probability of Pass GIVEN Group Discussion.
-
----
-
-## 8. Relationship Between Events
-
-Group discussion and passing exam are DEPENDENT events because:
-
-P(Pass | Group Discussion) ≠ P(Pass)
-
-The probability changes when a condition is applied.
-
----
-
-## 9. Bayes Theorem
-
-Bayes formula:
-
-P(A|B) = (P(B|A) × P(A)) / P(B)
-
-Used to calculate:
-
-P(Pass | High Attendance)
+### 9️⃣ Singular Value Decomposition (SVD)
+```python
+U, S, V = np.linalg.svd(X)
+```
+**Use cases:** dimensionality reduction, recommendation systems, noise reduction.
 
 ---
 
-## 🧠 Final Summary
+## 🔢 Part E — Dimensionality Reduction
 
-Students who:
+### 🔟 Principal Component Analysis (PCA)
+Reduces the 4-dimensional score matrix to 2 dimensions:
+```python
+from sklearn.decomposition import PCA
+pca = PCA(n_components=2)
+X_reduced = pca.fit_transform(X)
+```
+**Benefits:** reduce features, visualize data, remove correlation.
 
-- Study more  
-- Attend classes regularly  
-- Participate in group discussions  
-- Perform well in previous tests  
-
-have a higher probability of passing exams.
-
-Group discussion and passing exam are dependent events.
-
----
-
-## 🎓 Learning Outcomes
-
-- Understanding probability  
-- Random variables  
-- Mean and variance  
-- Venn diagram interpretation  
-- Contingency tables  
-- Conditional probability  
-- Bayes theorem  
-- Python-based data analysis  
+### 1️⃣1️⃣ Linear Discriminant Analysis (LDA)
+Classifies students into **Above Average** vs **Below Average**:
+```python
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+y = np.array([0, 0, 1, 1])   # 0=Above Avg, 1=Below Avg
+lda = LinearDiscriminantAnalysis(n_components=1)
+X_lda = lda.fit_transform(X, y)
+```
 
 ---
 
-## ✨ Author
+## 📊 Visualizations
 
-Student Probability Mini Project  
-Using Python and Jupyter Notebook
+### 1️⃣ Subject Score Comparison
+Bar chart showing each student's performance across all four subjects.
+
+![Subject Score Comparison](images/plot1_subject_scores.png)
+
+---
+
+### 2️⃣ Vector Visualization (Math vs Physics)
+Each student's Math and Physics scores represented as a 2D vector from the origin.
+
+![Vector Visualization](images/plot2_vectors.png)
+
+---
+
+### 3️⃣ Eigenvalue Importance
+Shows how much variance each principal direction captures in the covariance matrix.
+
+![Eigenvalue Importance](images/plot3_eigenvalues.png)
+
+---
+
+### 4️⃣ PCA Projection (2D)
+Students projected onto the top 2 principal components for visualization.
+
+![PCA Visualization](images/plot4_pca.png)
+
+---
+
+### 5️⃣ LDA Classification
+Students separated into Above Average (blue) and Below Average (red) along the LDA axis.
+
+![LDA Classification](images/plot5_lda.png)
+
+---
+
+## 🧾 Conclusion
+
+- **Linear Algebra** is fundamental to data science and machine learning.
+- Student scores were represented as **vectors and matrices**, enabling norm computation, dot products, and projections.
+- **Eigenvalues & eigenvectors** revealed the variance structure of the dataset.
+- **LU decomposition** and **SVD** simplified matrix computations.
+- **PCA** reduced the dataset to 2 dimensions, while **LDA** classified students into performance groups.
+
+> This project demonstrates how abstract linear algebra concepts map directly onto real-world data analysis tasks.
+
+---
+
+## 🛠️ Dependencies
+
+```
+numpy
+scipy
+scikit-learn
+matplotlib
+pandas
+```
+
+Install with:
+```bash
+pip install numpy scipy scikit-learn matplotlib pandas
+```
